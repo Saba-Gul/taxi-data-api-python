@@ -1,0 +1,28 @@
+app: taxi-data-api-python1
+env: rational-voice
+namespace: default
+chart:
+  repository: https://chart.onechart.dev
+  name: onechart
+  version: 0.70.0
+values:
+  containerPort: 8000
+  gitRepository: Saba-Gul/taxi-data-api-python
+  gitSha: '{{ .SHA }}'
+  image:
+    context: .
+    dockerfile: Dockerfile.2stage
+    registry: customRegistry
+    repository: registry.gimlet:30003/saba-gulcdjjdjta/{{ .APP }}
+    strategy: dockerfile
+    tag: '{{ .SHA }}'
+  imagePullSecrets:
+    - '{{ .APP }}-customregistry-pullsecret'
+  ingress:
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt
+      kubernetes.io/ingress.class: nginx
+    host: saba-gul-taxi-data-api-python-cdjjdjta.gimlet.app
+    tlsEnabled: true
+  resources:
+    ignoreLimits: true
